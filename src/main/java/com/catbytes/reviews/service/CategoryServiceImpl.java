@@ -32,14 +32,4 @@ public class CategoryServiceImpl implements CategoryService {
         });
         return categories;
     }
-
-    @Override
-    public Category findCategory(String name) throws CategoryNotFoundException {
-        return categoryRepository.findCategoryByName(name).orElseThrow(() -> new CategoryNotFoundException("Category with name " + name + " not found"));
-    }
-
-    @Override
-    public Category findCategory(Long id) throws CategoryNotFoundException {
-        return categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException("Category with id " + id + " not found"));
-    }
 }
