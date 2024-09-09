@@ -6,19 +6,19 @@ import java.util.List;
 
 @Component
 public class CategoryDTO {
-    private int id;
+    private Long id;
     private String name;
-    private Integer parentId;
+    private Long parentId;
     private List<CategoryDTO> subCategories;
 
     public CategoryDTO() {}
-    public CategoryDTO(long id, String name, long parentId, List<CategoryDTO> subCategories) {}
+    public CategoryDTO(Long id, String name, Long parentId, List<CategoryDTO> subCategories) {}
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -30,11 +30,11 @@ public class CategoryDTO {
         this.name = name;
     }
 
-    public Integer getParentId() {
+    public Long getParentId() {
         return parentId;
     }
 
-    public void setParentId(Integer parentId) {
+    public void setParentId(Long parentId) {
         this.parentId = parentId;
     }
 

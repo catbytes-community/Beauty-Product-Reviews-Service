@@ -13,7 +13,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
@@ -28,7 +27,7 @@ public class Category implements Serializable, Comparable<Category> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(unique = true)
     @NotEmpty(message = "Name should not be empty")
@@ -36,11 +35,11 @@ public class Category implements Serializable, Comparable<Category> {
     private String name;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Category> subCategories = new ArrayList<>();
 
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "parent_id")
     private Category parent;
 
@@ -55,11 +54,11 @@ public class Category implements Serializable, Comparable<Category> {
         this.parent = parent;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -87,10 +86,6 @@ public class Category implements Serializable, Comparable<Category> {
         this.subCategories = subCategories;
     }
 
-    public void addSubCategories(Category subCategory) {
-        this.subCategories.add(subCategory);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -108,7 +103,7 @@ public class Category implements Serializable, Comparable<Category> {
     @Override
     public int compareTo(Category o) {
         if (this.id == null && o.id == null) {
-            return 0;
+            return compareByName(o);
         }
         if (this.id == null) {
             return -1;
@@ -116,7 +111,24 @@ public class Category implements Serializable, Comparable<Category> {
         if (o.id == null) {
             return 1;
         }
+        if (this.id.equals(o.id)) {
+            return compareByName(o);
+        }
+
         return this.id.compareTo(o.id);
+    }
+
+    private int compareByName(Category o) {
+        if (this.name == null && o.name == null) {
+            return 0;
+        }
+        if (this.name == null) {
+            return -1;
+        }
+        if (o.name == null) {
+            return 1;
+        }
+        return this.name.compareTo(o.name);
     }
 
     @Override

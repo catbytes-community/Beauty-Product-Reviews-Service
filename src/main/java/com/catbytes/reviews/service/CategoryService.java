@@ -8,20 +8,8 @@ import java.util.List;
 public interface CategoryService {
     Category findCategory(String name) throws CategoryNotFoundException;
 
-    void saveCategory(Category category);
+    Category findCategory(Long id) throws CategoryNotFoundException;
 
-    void saveAllCategories(List<Category> category);
-
-    void editCategory(Category category);
-
-    List<Category> findAllCategories();
-
-    List<Category> createTreeCategoriesByParent(final List<Category> categories, Integer parentId);
-
-    Category findCategory(int id) throws CategoryNotFoundException;
-
-    void deleteCategory(String name);
-
-    void deleteCategory(int id);
+    List<Category> getTreeCategories(Long parentId);
 
 }
