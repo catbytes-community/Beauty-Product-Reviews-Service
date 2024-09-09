@@ -23,12 +23,13 @@ public class CategoryMapper {
             categoryDTO.setParentId(category.getParent().getId());
         }
 
-        List<CategoryDTO> subCategoriesDTOList = category.getSubCategories().stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
-        categoryDTO.setSubCategories(subCategoriesDTOList);
+        if (category.getSubCategories() != null) {
+            List<CategoryDTO> subCategoriesDTOList = category.getSubCategories().stream()
+                    .map(this::convertToDTO)
+                    .collect(Collectors.toList());
+            categoryDTO.setSubCategories(subCategoriesDTOList);
+        }
 
         return categoryDTO;
-
     }
 }
