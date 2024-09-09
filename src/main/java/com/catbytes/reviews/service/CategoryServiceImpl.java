@@ -14,17 +14,15 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
 
     @Autowired
-    public CategoryServiceImpl (CategoryRepository categoryRepository) {
+    public CategoryServiceImpl(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<Category> getTreeCategories(Long parentId) {
-        if (parentId == null) {
-            List<Category> rootCategories = categoryRepository.findRootCategories();
-            return createTreeCategories(rootCategories);
-        }
-        List<Category> categoriesByParentId = categoryRepository.findByParentId(parentId);
-        return createTreeCategories(categoriesByParentId);
+    public List<Category> getTreeCategories() {
+
+        List<Category> rootCategories = categoryRepository.findRootCategories();
+        return createTreeCategories(rootCategories);
+
     }
 
     private List<Category> createTreeCategories(List<Category> categories) {

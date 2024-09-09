@@ -10,6 +10,6 @@ public interface CategoryService {
 
     Category findCategory(Long id) throws CategoryNotFoundException;
 
-    List<Category> getTreeCategories(Long parentId);
+    List<Category> getTreeCategories();
 
 }
