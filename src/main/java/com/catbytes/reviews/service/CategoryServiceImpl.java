@@ -13,14 +13,14 @@ import java.util.List;
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(CategoryServiceImpl.class);
+
     private final CategoryRepository categoryRepository;
 
     @Autowired
     public CategoryServiceImpl(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
-
-    public static final Logger LOG = LoggerFactory.getLogger(Category.class);
 
     public List<Category> getTreeCategories() {
         LOG.info("Starting to get tree categories");

@@ -6,13 +6,14 @@ import java.util.List;
 
 @Component
 public class CategoryDTO {
+
     private Long id;
     private String name;
     private Long parentId;
     private List<CategoryDTO> subCategories;
 
-    public CategoryDTO() {}
-    public CategoryDTO(Long id, String name, Long parentId, List<CategoryDTO> subCategories) {}
+    public CategoryDTO() {
+    }
 
     public Long getId() {
         return id;

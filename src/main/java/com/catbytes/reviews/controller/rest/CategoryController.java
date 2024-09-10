@@ -17,6 +17,8 @@ import java.util.stream.Collectors;
 @RequestMapping("/product")
 public class CategoryController {
 
+    private static final Logger LOG = LoggerFactory.getLogger(CategoryController.class);
+
     private final CategoryMapper categoryMapper;
     private final CategoryService categoryService;
 
@@ -24,8 +26,6 @@ public class CategoryController {
         this.categoryMapper = categoryMapper;
         this.categoryService = categoryService;
     }
-
-    public static final Logger LOG = LoggerFactory.getLogger(Category.class);
 
     @GetMapping("/categories")
     public Set<CategoryDTO> getTreeOfCategory() {
