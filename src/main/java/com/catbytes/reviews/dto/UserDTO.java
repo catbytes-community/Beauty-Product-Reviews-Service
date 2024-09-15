@@ -1,36 +1,31 @@
-package com.catbytes.reviews.entity;
+package com.catbytes.reviews.dto;
 
-import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
-@Entity
-@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
-public class User {
+public class UserDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @NotBlank
-    @Email
-    @Column(nullable = false, unique = true)
+    @NotBlank(message = "Email is required")
+    @Email(message = "Invalid email format")
     private String email;
 
-    @NotNull
-    @NotBlank
-    @Column(nullable = false)
+    @NotBlank(message = "Name is required")
+    @Size(min = 2, max = 20, message = "Name should be between 2 and 50 characters")
     private String name;
 
-    public User() {}
-
-    public User(String email, String name) {
+    public UserDTO(Long id, String email, String name) {
+        this.id = id;
         this.email = email;
         this.name = name;
     }
+    public UserDTO() {
+    }
 
+    // Getters and setters
     public Long getId() {
         return id;
     }

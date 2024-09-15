@@ -1,11 +1,10 @@
 package com.catbytes.reviews.controller;
 
-import com.catbytes.reviews.dto.UserRegistrationRequest;
+import com.catbytes.reviews.dto.UserDTO;
 import com.catbytes.reviews.entity.User;
 import com.catbytes.reviews.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,9 +19,10 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody UserRegistrationRequest request) {
-        User registeredUser = userService.registerUser(request.getEmail(), request.getName());
-        return new ResponseEntity<>(registeredUser, HttpStatus.CREATED);
+    public UserDTO registerUser(@Valid @RequestBody UserDTO request) {
+        User userEntity = userService.mapToEntity(request);
+        User registeredUser = userService.registerUser(userEntity.getEmail(), userEntity.getName());
+        return userService.mapToDTO(registeredUser);
     }
-}
 
+}
