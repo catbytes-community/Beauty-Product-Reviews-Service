@@ -2,7 +2,6 @@ package com.catbytes.reviews.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class UserDTO {
@@ -14,7 +13,7 @@ public class UserDTO {
     private String email;
 
     @NotBlank(message = "Name is required")
-    @Size(min = 2, max = 20, message = "Name should be between 2 and 50 characters")
+    @Size(min = 2, max = 20, message = "Name should be between 2 and 20 characters")
     private String name;
 
     public UserDTO(Long id, String email, String name) {
@@ -22,6 +21,7 @@ public class UserDTO {
         this.email = email;
         this.name = name;
     }
+
     public UserDTO() {
     }
 

@@ -2,6 +2,7 @@ package com.catbytes.reviews.service;
 
 import com.catbytes.reviews.dto.UserDTO;
 import com.catbytes.reviews.entity.User;
+import com.catbytes.reviews.mapper.UserMapper;
 import com.catbytes.reviews.repository.UserRepository;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Email;
@@ -18,10 +19,12 @@ public class UserService {
     private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
 
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
+        this.userMapper = userMapper;
     }
 
     public User registerUser(@NotBlank @Email String email, String name) {
@@ -42,12 +45,11 @@ public class UserService {
         return savedUser;
     }
 
-    public UserDTO mapToDTO(User user) {
-        return new UserDTO(user.getId(), user.getEmail(), user.getName());
+    public UserDTO getUserDTO(User user) {
+        return userMapper.toDTO(user);
     }
 
-    public User mapToEntity(UserDTO userDTO) {
-        return new User(userDTO.getEmail(), userDTO.getName());
+    public User getUserEntity(UserDTO userDTO) {
+        return userMapper.toEntity(userDTO);
     }
 }
-

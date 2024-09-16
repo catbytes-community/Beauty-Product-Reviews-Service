@@ -20,9 +20,7 @@ public class UserController {
 
     @PostMapping("/register")
     public UserDTO registerUser(@Valid @RequestBody UserDTO request) {
-        User userEntity = userService.mapToEntity(request);
-        User registeredUser = userService.registerUser(userEntity.getEmail(), userEntity.getName());
-        return userService.mapToDTO(registeredUser);
+        User registeredUser = userService.registerUser(request.getEmail(), request.getName());
+        return userService.getUserDTO(registeredUser);
     }
-
 }

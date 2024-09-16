@@ -3,28 +3,26 @@ package com.catbytes.reviews.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
+@Table(name = "users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     @NotBlank
     @Email
     @Column(nullable = false, unique = true)
     private String email;
 
-    @NotNull
     @NotBlank
     @Column(nullable = false)
     private String name;
 
-    public User() {}
+    public User() {
+    }
 
     public User(String email, String name) {
         this.email = email;
