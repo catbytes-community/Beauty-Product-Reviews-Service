@@ -26,13 +26,7 @@ public class UserController {
 
     @PostMapping("/register")
     public UserDTO registerUser(@Valid @RequestBody UserDTO request) {
-        // Convert DTO to entity
-        User userEntity = userMapper.toEntity(request);
-
-        // Register the user
-        User registeredUser = userService.registerUser(userEntity.getEmail(), userEntity.getName());
-
-        // Convert back to DTO
+        User registeredUser = userService.registerUser(request.getEmail(), request.getName());
         return userMapper.toDTO(registeredUser);
     }
 
