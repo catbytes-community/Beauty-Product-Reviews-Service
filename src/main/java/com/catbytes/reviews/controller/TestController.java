@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/test")
 public class TestController {
 
-    private TestService testService;
-    private TestMapper testMapper;
+    private final TestService testService;
+    private final TestMapper testMapper;
 
     @Autowired
     public TestController(TestService testService, TestMapper testMapper) {

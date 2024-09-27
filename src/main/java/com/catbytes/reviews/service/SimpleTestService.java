@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SimpleTestService implements TestService {
 
-    private TestRepository testRepository;
+    private final TestRepository testRepository;
 
     @Autowired
     public SimpleTestService(TestRepository testRepository) {
