@@ -1,19 +1,18 @@
 package com.catbytes.reviews.dto;
 
 public class ProductDTO {
+
     private Long id;
     private String name;
     private String brand;
     private Long categoryId;
-    private String imageUrl;
     private Double averageRating;
 
-    public ProductDTO(Long id, String name, String brand, Long categoryId, String imageUrl, Double averageRating) {
+    public ProductDTO(Long id, String name, String brand, Long categoryId, Double averageRating) {
         this.id = id;
         this.name = name;
         this.brand = brand;
         this.categoryId = categoryId;
-        this.imageUrl = imageUrl;
         this.averageRating = averageRating;
     }
 
@@ -51,14 +50,6 @@ public class ProductDTO {
 
     public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 
     public Double getAverageRating() {

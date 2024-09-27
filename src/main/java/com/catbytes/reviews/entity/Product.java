@@ -1,6 +1,5 @@
 package com.catbytes.reviews.entity;
 
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,8 +7,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-
-import java.util.List;
 
 @Entity
 @Table(name = "product")
@@ -21,26 +18,22 @@ public class Product {
 
     private String name;
     private String brand;
-    private String imageUrl;
-    private double averageRating;
-
-    @ElementCollection
-    private List<Integer> ratings;
+    private Double averageRating;
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
+    //TODO: implement @OneToMany List<Review> after [#11] - Review Entity and Review Posting API
+
     public Product() {
     }
 
-    public Product(String name, String brand, String imageUrl, Category category, List<Integer> ratings) {
+    public Product(String name, String brand, Category category, Double averageRating) {
         this.name = name;
         this.brand = brand;
-        this.imageUrl = imageUrl;
         this.category = category;
-        this.ratings = ratings;
-        this.averageRating = calculateAverageRating();
+        this.averageRating = averageRating;
     }
 
     public Long getId() {
@@ -67,29 +60,12 @@ public class Product {
         this.brand = brand;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
     public double getAverageRating() {
         return averageRating;
     }
 
     public void setAverageRating(double averageRating) {
         this.averageRating = averageRating;
-    }
-
-    public List<Integer> getRatings() {
-        return ratings;
-    }
-
-    public void setRatings(List<Integer> ratings) {
-        this.ratings = ratings;
-        this.averageRating = calculateAverageRating();
     }
 
     public Category getCategory() {
@@ -100,10 +76,5 @@ public class Product {
         this.category = category;
     }
 
-    private double calculateAverageRating() {
-        if (ratings == null || ratings.isEmpty()) {
-            return 0.0;
-        }
-        return ratings.stream().mapToInt(Integer::intValue).average().orElse(0.0);
-    }
+
 }
