@@ -1,10 +1,10 @@
-package com.catbytes.reviews.exception;
+package com.catbytes.reviews.dto;
 
-public class ErrorResponse {
+public class ErrorDTO {
     private String error;
     private String message;
 
-    public ErrorResponse(String error, String message) {
+    public ErrorDTO(String error, String message) {
         this.error = error;
         this.message = message;
     }
