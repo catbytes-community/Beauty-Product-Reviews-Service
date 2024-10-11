@@ -39,6 +39,7 @@ public class ErrorHandler {
     // Handle all other exceptions
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorDTO> handleGeneralException(Exception ex) {
+        // TODO: delete after rolling out for production
         ex.printStackTrace();
 
         ErrorDTO errorDTO = new ErrorDTO("Internal Server Error", ex.getMessage());
