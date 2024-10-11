@@ -1,7 +1,5 @@
 package com.catbytes.reviews.service;
 
-import com.catbytes.reviews.dto.ProductDTO;
-import com.catbytes.reviews.entity.Category;
 import com.catbytes.reviews.entity.Product;
 import com.catbytes.reviews.mapper.ProductMapper;
 import com.catbytes.reviews.repository.CategoryRepository;
@@ -14,28 +12,21 @@ import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
-    private final CategoryRepository categoryRepository;
-    private final ProductMapper productMapper;
+
     private final ProductRepository productRepository;
 
     @Autowired
     public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository,
                               ProductMapper productMapper) {
         this.productRepository = productRepository;
-        this.categoryRepository = categoryRepository;
-        this.productMapper = productMapper;
-
     }
 
     @Override
-    public Product addProduct(ProductDTO productDTO) {
-        Optional<Product> existingProduct = productRepository.findByNameAndBrand(productDTO.getName(), productDTO.getBrand());
+    public Product saveProduct(Product product) {
+        Optional<Product> existingProduct = productRepository.findByNameAndBrand(product.getName(), product.getBrand());
         if (existingProduct.isPresent()) {
             throw new IllegalArgumentException("Product with the same name and brand already exists.");
         }
-        Category category = categoryRepository.findById(productDTO.getCategoryId())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid category ID"));
-        Product product = productMapper.toEntity(productDTO, category);
         return productRepository.save(product);
     }
 
@@ -54,12 +45,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Optional<Product> findByName(String name) {
-        return productRepository.findByName(name);
+    public Optional<Product> findByNameContainingIgnoreCase(String name) {
+        return productRepository.findByNameContainingIgnoreCase(name);
     }
-    //TODO: add find by Name
-
-    //TODO: remove product
 
     @Override
     public Double calculateAverageRating(Long productId) {

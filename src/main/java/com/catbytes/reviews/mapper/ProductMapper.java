@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProductMapper {
     public ProductDTO toDTO(Product product) {
+        if (product == null) {
+            return null;
+        }
         return new ProductDTO(
                 product.getId(),
                 product.getName(),
@@ -17,14 +20,5 @@ public class ProductMapper {
         );
     }
 
-    public Product toEntity(ProductDTO productDTO, Category category) {
-        return new Product(
-                productDTO.getName(),
-                productDTO.getBrand(),
-                category,
-                productDTO.getAverageRating()
-        );
-    }
-    //TODO: write implementation
 
 }

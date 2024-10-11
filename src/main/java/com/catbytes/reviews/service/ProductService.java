@@ -1,6 +1,5 @@
 package com.catbytes.reviews.service;
 
-import com.catbytes.reviews.dto.ProductDTO;
 import com.catbytes.reviews.entity.Product;
 
 import java.util.List;
@@ -11,12 +10,11 @@ public interface ProductService {
     Double calculateAverageRating(Long productId);
 
     List<Product> getAllProducts();
-    
-    Product addProduct(ProductDTO productDTO);
+
+    Product saveProduct(Product product);
 
     void deleteProduct(Long id);
 
-    Optional<Product> findByName(String name);
+    Optional<Product> findByNameContainingIgnoreCase(String name);
 
-    //TODO: ass public methods (add, delete etc)
 }
