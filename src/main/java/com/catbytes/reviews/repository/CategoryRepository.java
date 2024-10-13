@@ -17,4 +17,5 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Query("SELECT t FROM Category t WHERE t.parent.id IS NULL")
     List<Category> findRootCategories();
 
+    boolean existsBy();
 }
