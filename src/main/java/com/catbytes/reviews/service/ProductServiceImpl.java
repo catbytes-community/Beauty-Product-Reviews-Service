@@ -32,6 +32,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getAllProducts() {  // Реализуем метод
+        //TODO: add limit later
         return productRepository.findAll();
     }
 
@@ -45,6 +46,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    //TODO: upgrade method later
     public Optional<Product> findByNameContainingIgnoreCase(String name) {
         return productRepository.findByNameContainingIgnoreCase(name);
     }
