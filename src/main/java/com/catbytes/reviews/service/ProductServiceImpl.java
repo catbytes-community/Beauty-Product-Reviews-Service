@@ -5,6 +5,7 @@ import com.catbytes.reviews.mapper.ProductMapper;
 import com.catbytes.reviews.repository.CategoryRepository;
 import com.catbytes.reviews.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product saveProduct(Product product) {
+    public Product addProduct(Product product) {
         Optional<Product> existingProduct = productRepository.findByNameAndBrand(product.getName(), product.getBrand());
         if (existingProduct.isPresent()) {
             throw new IllegalArgumentException("Product with the same name and brand already exists.");
@@ -32,8 +33,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getAllProducts() {  // Реализуем метод
-        //TODO: add limit later
-        return productRepository.findAll();
+        // Limit the result to the first 20 products
+        return productRepository.findAll(PageRequest.of(0, 20)).getContent();
     }
 
     public Product getProductById(Long id) {
@@ -46,10 +47,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    //TODO: upgrade method later
-    public Optional<Product> findByNameContainingIgnoreCase(String name) {
-        return productRepository.findByNameContainingIgnoreCase(name);
+    public List<Product> findByNameContainingIgnoreCase(String name) {
+        // Return up to 10 matching results
+        return productRepository.findByNameContainingIgnoreCase(name, PageRequest.of(0, 10)).getContent();
     }
+
 
     @Override
     public Double calculateAverageRating(Long productId) {

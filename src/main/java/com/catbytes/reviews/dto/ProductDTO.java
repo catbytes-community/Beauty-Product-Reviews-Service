@@ -19,7 +19,7 @@ public class ProductDTO {
     public ProductDTO() {
     }
 
-    // Геттеры и сеттеры
+    // Getters and setters
     public Long getId() {
         return id;
     }
