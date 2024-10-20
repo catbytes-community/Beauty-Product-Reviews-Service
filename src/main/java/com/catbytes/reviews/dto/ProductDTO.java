@@ -1,2 +1,4 @@
-package com.catbytes.reviews.dto;public class ProductDTO {
+package com.catbytes.reviews.dto;
+
+public class ProductDTO {
 }

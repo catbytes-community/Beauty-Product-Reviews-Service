@@ -1,27 +1,40 @@
 package com.catbytes.reviews.dto;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 import java.time.LocalDateTime;
 
-public class PeviewDTO {
+public class ReviewDTO {
 
     private Long id;
 
+    @NotNull
     private Long userId;
 
+    @NotNull
     private Long productId;
 
+    @NotEmpty(message = "headline should not be empty")
+    @Size(min = 2, max = 200)
     private String headline;
 
+    @NotEmpty(message = "description should not be empty")
     private String description;
 
+    @NotNull
+    @Min(1)
+    @Max(5)
     private Integer rate;
 
     private LocalDateTime createdAt;
 
-//    спросить
-//    private LocalDateTime updatedAt;
+//    TODO:спросить про private LocalDateTime updatedAt;
 
-    public PeviewDTO(Long id, Long userId, Long productId, String headline, String description, Integer rate, LocalDateTime createdAt) {
+    public ReviewDTO(Long id, Long userId, Long productId, String headline, String description, Integer rate, LocalDateTime createdAt) {
         this.id = id;
         this.userId = userId;
         this.productId = productId;
@@ -30,6 +43,8 @@ public class PeviewDTO {
         this.rate = rate;
         this.createdAt = createdAt;
     }
+
+    public ReviewDTO() {}
 
     public Long getId() {
         return id;
