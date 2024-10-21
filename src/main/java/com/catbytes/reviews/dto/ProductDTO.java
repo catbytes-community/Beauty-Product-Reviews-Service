@@ -1,11 +1,18 @@
 package com.catbytes.reviews.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 public class ProductDTO {
 
+    @Schema(description = "The unique identifier of product", example = "1")
     private Long id;
+    @Schema(description = "Product name", example = "Moisture Surge Gel")
     private String name;
+    @Schema(description = "Product brand", example = "Clinique")
     private String brand;
+    @Schema(description = "Category identifier", example = "3")
     private Long categoryId;
+    @Schema(description = "Product average rating", example = "4.5")
     private Double averageRating;
 
     public ProductDTO(Long id, String name, String brand, Long categoryId, Double averageRating) {
