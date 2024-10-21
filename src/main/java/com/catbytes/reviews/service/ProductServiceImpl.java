@@ -6,6 +6,7 @@ import com.catbytes.reviews.repository.CategoryRepository;
 import com.catbytes.reviews.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,10 +33,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getAllProducts() {  // Реализуем метод
-        // Limit the result to the first 20 products
-        return productRepository.findAll(PageRequest.of(0, 20)).getContent();
+    public List<Product> getAllProducts(int limit, String sortBy, String direction) {
+        // Determine the sorting direction
+        Sort.Direction sortDirection = direction.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+
+        // Apply limit and sort
+        return productRepository.findAll(PageRequest.of(0, limit, Sort.by(sortDirection, sortBy))).getContent();
     }
+
 
     public Product getProductById(Long id) {
         return productRepository.findById(id).orElse(null);
@@ -47,11 +52,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findByNameContainingIgnoreCase(String name) {
-        // Return up to 10 matching results
-        return productRepository.findByNameContainingIgnoreCase(name, PageRequest.of(0, 10)).getContent();
-    }
+    public List<Product> findByNameContainingIgnoreCase(String name, int limit, String sortBy, String direction) {
+        // Determine the sorting direction
+        Sort.Direction sortDirection = direction.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
 
+        // Apply limit and sort
+        return productRepository.findByNameContainingIgnoreCase(name, PageRequest.of(0, limit, Sort.by(sortDirection, sortBy))).getContent();
+    }
 
     @Override
     public Double calculateAverageRating(Long productId) {

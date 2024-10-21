@@ -6,9 +6,11 @@ import java.util.List;
 
 public interface ProductService {
 
+    List<Product> findByNameContainingIgnoreCase(String name, int limit, String sortBy, String direction);
+
     Double calculateAverageRating(Long productId);
 
-    List<Product> getAllProducts();
+    List<Product> getAllProducts(int limit, String sortBy, String direction);
 
     Product getProductById(Long id);
 
@@ -16,6 +18,5 @@ public interface ProductService {
 
     void deleteProduct(Long id);
 
-    List<Product> findByNameContainingIgnoreCase(String name);
 
 }
