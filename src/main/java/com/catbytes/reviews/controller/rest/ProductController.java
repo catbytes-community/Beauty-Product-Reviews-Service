@@ -1,6 +1,7 @@
 package com.catbytes.reviews.controller.rest;
 
 import com.catbytes.reviews.dto.ProductDTO;
+import com.catbytes.reviews.entity.Brand;
 import com.catbytes.reviews.entity.Product;
 import com.catbytes.reviews.mapper.ProductMapper;
 import com.catbytes.reviews.service.ProductService;
@@ -35,18 +36,38 @@ public class ProductController {
 
         List<Product> products;
         if (name == null || name.isEmpty()) {
-            // If no name is provided, fetch all products
             products = productService.getAllProducts(limit, sortBy, direction);
         } else {
-            // If a name is provided, search by name (ignoring case)
             products = productService.findByNameContainingIgnoreCase(name, limit, sortBy, direction);
         }
 
-        // Convert entities to DTO
         return products.stream()
                 .map(productMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("/brand")
+    @Operation(summary = "Get all available brands",
+            description = "Returns a list of all available brands.")
+    public List<String> getAllBrands() {
+        return productService.getAllBrands().stream()
+                .map(Brand::getName)
+                .collect(Collectors.toList());
+    }
 
+    @PostMapping(consumes = "application/json", produces = "application/json")
+    @Operation(summary = "Add a new product",
+            description = "Creates a new product. If the brand does not exist, it will be created.")
+    public ProductDTO addProduct(@RequestBody ProductDTO productDTO) {
+        // Getting or creating a brand
+        Brand brand = productService.addBrand(productDTO.getBrand().getName()); // Get the brand name from the Brand object
+
+        // Convert ProductDTO to Product and set Brand object
+        Product product = productMapper.toEntity(productDTO);
+        product.setBrand(brand);
+
+        // Save the new product and return the corresponding ProductDTO
+        Product savedProduct = productService.addProduct(product);
+        return productMapper.toDTO(savedProduct);
+    }
 }
