@@ -1,6 +1,7 @@
 package com.catbytes.reviews.service;
 
 import com.catbytes.reviews.entity.Product;
+import com.catbytes.reviews.entity.Brand;
 
 import java.util.List;
 
@@ -18,5 +19,9 @@ public interface ProductService {
 
     void deleteProduct(Long id);
 
+    // Methods for Brand
+    List<Brand> getAllBrands();
+
+    Brand addBrand(String brandName);
 
 }

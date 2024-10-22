@@ -1,6 +1,8 @@
 package com.catbytes.reviews.service;
 
 import com.catbytes.reviews.entity.Product;
+import com.catbytes.reviews.entity.Brand;
+import com.catbytes.reviews.repository.BrandRepository;
 import com.catbytes.reviews.mapper.ProductMapper;
 import com.catbytes.reviews.repository.CategoryRepository;
 import com.catbytes.reviews.repository.ProductRepository;
@@ -16,15 +18,23 @@ import java.util.Optional;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
+    private final BrandRepository brandRepository;
 
     @Autowired
     public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository,
-                              ProductMapper productMapper) {
+                              ProductMapper productMapper, BrandRepository brandRepository) {
         this.productRepository = productRepository;
+        this.brandRepository = brandRepository;
     }
 
     @Override
     public Product addProduct(Product product) {
+        // Check if a brand by name exists
+        Brand brand = brandRepository.findByName(product.getBrand().getName())
+                .orElseGet(() -> brandRepository.save(new Brand(product.getBrand().getName())));
+
+        product.setBrand(brand);
+
         Optional<Product> existingProduct = productRepository.findByNameAndBrand(product.getName(), product.getBrand());
         if (existingProduct.isPresent()) {
             throw new IllegalArgumentException("Product with the same name and brand already exists.");
@@ -66,4 +76,14 @@ public class ProductServiceImpl implements ProductService {
         return null;
     }
 
+    @Override
+    public List<Brand> getAllBrands() {
+        return brandRepository.findAll();
+    }
+
+    @Override
+    public Brand addBrand(String brandName) {
+        return brandRepository.findByName(brandName)
+                .orElseGet(() -> brandRepository.save(new Brand(brandName)));
+    }
 }
