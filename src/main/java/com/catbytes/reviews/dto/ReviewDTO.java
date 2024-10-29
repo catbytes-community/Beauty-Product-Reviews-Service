@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 
 public class ReviewDTO {
 
-
     @Schema(description = "The unique identifier of the review", example = "1")
     private Long id;
 

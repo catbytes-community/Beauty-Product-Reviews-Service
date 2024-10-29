@@ -10,12 +10,19 @@ import com.catbytes.reviews.repository.UserRepository;
 import com.catbytes.reviews.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
 @Component
 public class ReviewMapper {
+
+    @Value("${rate.min}")
+    private int MIN;
+
+    @Value("${rate.max}")
+    private int MAX;
 
     private static final Logger LOG = LoggerFactory.getLogger(ReviewMapper.class);
 
@@ -66,7 +73,11 @@ public class ReviewMapper {
         review.setProduct(product);
         review.setHeadline(reviewDTO.getHeadline());
         review.setDescription(reviewDTO.getDescription());
-        review.setRate(reviewDTO.getRate());
+
+        if (reviewDTO.getRate() > MIN && reviewDTO.getRate() < MAX) {
+            review.setRate(reviewDTO.getRate());
+        }
+
         review.setCreatedAt(LocalDateTime.now());
 
         LOG.debug("Converted ReviewDTO to Review entity successfully");
