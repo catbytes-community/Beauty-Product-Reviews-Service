@@ -36,8 +36,6 @@ public class ReviewDTO {
 
     @Schema(description = "Rating given to the product", example = "4")
     @NotNull
-    @Min(1)
-    @Max(5)
     private Integer rate;
 
     @Schema(description = "Timestamp when the review was created")

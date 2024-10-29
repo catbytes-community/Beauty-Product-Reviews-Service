@@ -18,12 +18,6 @@ import java.time.LocalDateTime;
 @Component
 public class ReviewMapper {
 
-    @Value("${rate.min}")
-    private int MIN;
-
-    @Value("${rate.max}")
-    private int MAX;
-
     private static final Logger LOG = LoggerFactory.getLogger(ReviewMapper.class);
 
     private final UserRepository userRepository;
@@ -73,13 +67,8 @@ public class ReviewMapper {
         review.setProduct(product);
         review.setHeadline(reviewDTO.getHeadline());
         review.setDescription(reviewDTO.getDescription());
-
-        if (reviewDTO.getRate() > MIN && reviewDTO.getRate() < MAX) {
-            review.setRate(reviewDTO.getRate());
-        }
-
+        review.setRate(reviewDTO.getRate());
         review.setCreatedAt(LocalDateTime.now());
-
         LOG.debug("Converted ReviewDTO to Review entity successfully");
         return review;
     }
