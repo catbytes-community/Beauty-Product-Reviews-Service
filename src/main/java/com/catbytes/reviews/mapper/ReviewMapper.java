@@ -1,5 +1,6 @@
 package com.catbytes.reviews.mapper;
 
+import com.catbytes.reviews.dto.ProductDTO;
 import com.catbytes.reviews.dto.ReviewDTO;
 import com.catbytes.reviews.entity.Product;
 import com.catbytes.reviews.entity.Review;
@@ -50,7 +51,7 @@ public class ReviewMapper {
     }
 
     public Review toEntity(ReviewDTO reviewDTO) {
-        LOG.info("Starting to toEntity");
+        LOG.info("Starting to convert ReviewDTO to Review entity");
         if (reviewDTO == null) {
             throw new IllegalArgumentException("reviewDTO is null");
         }
@@ -58,7 +59,7 @@ public class ReviewMapper {
         User user = userRepository.findUserById(reviewDTO.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        Product product = productMapper.toEntity(reviewDTO.getProductDTO());
+        Product product = findOrCreateProduct(reviewDTO.getProductDTO());
 
         Review review = new Review();
         review.setUser(user);
@@ -67,7 +68,22 @@ public class ReviewMapper {
         review.setDescription(reviewDTO.getDescription());
         review.setRate(reviewDTO.getRate());
         review.setCreatedAt(LocalDateTime.now());
+
+        LOG.debug("Converted ReviewDTO to Review entity successfully");
         return review;
+    }
+
+    private Product findOrCreateProduct(ProductDTO productDTO) {
+        if (productDTO.getId() != null) {
+            return productRepository.findProductById(productDTO.getId())
+                    .orElseGet(() -> {
+                        LOG.warn("Product with id {} not found. Creating new product.", productDTO.getId());
+                        return productService.addProduct(productMapper.toEntity(productDTO));
+                    });
+        } else {
+            LOG.warn("Product id not found. Creating new product.");
+            return productService.addProduct(productMapper.toEntity(productDTO));
+        }
     }
 
 }

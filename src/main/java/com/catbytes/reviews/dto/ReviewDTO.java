@@ -7,10 +7,12 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDateTime;
 
 public class ReviewDTO {
+
 
     @Schema(description = "The unique identifier of the review", example = "1")
     private Long id;
