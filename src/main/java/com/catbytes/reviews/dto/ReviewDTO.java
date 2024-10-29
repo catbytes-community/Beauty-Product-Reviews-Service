@@ -1,5 +1,7 @@
 package com.catbytes.reviews.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -10,34 +12,43 @@ import java.time.LocalDateTime;
 
 public class ReviewDTO {
 
+    @Schema(description = "The unique identifier of the review", example = "1")
     private Long id;
 
+    @Schema(description = "ID of the user who submitted the review", example = "123")
     @NotNull
     private Long userId;
 
+    @Schema(description = "Product being reviewed")
+    @Valid
     @NotNull
-    private Long productId;
+    private ProductDTO productDTO;
 
+    @Schema(description = "Headline or title of the review", example = "Great product!")
     @NotEmpty(message = "headline should not be empty")
     @Size(min = 2, max = 200)
     private String headline;
 
+    @Schema(description = "Detailed description of the review", example = "This product exceeded my expectations.")
     @NotEmpty(message = "description should not be empty")
     private String description;
 
+    @Schema(description = "Rating given to the product", example = "4")
     @NotNull
     @Min(1)
     @Max(5)
     private Integer rate;
 
+    @Schema(description = "Timestamp when the review was created")
     private LocalDateTime createdAt;
 
-//    TODO:спросить про private LocalDateTime updatedAt;
+    @Schema(description = "Timestamp when the review was last updated")
+    private LocalDateTime updatedAt;
 
-    public ReviewDTO(Long id, Long userId, Long productId, String headline, String description, Integer rate, LocalDateTime createdAt) {
+    public ReviewDTO(Long id, Long userId, ProductDTO productDTO, String headline, String description, Integer rate, LocalDateTime createdAt) {
         this.id = id;
         this.userId = userId;
-        this.productId = productId;
+        this.productDTO = productDTO;
         this.headline = headline;
         this.description = description;
         this.rate = rate;
@@ -62,12 +73,12 @@ public class ReviewDTO {
         this.userId = userId;
     }
 
-    public Long getProductId() {
-        return productId;
+    public ProductDTO getProductDTO() {
+        return productDTO;
     }
 
-    public void setProductId(Long productId) {
-        this.productId = productId;
+    public void setProductDTO(ProductDTO productDTO) {
+        this.productDTO = productDTO;
     }
 
     public String getHeadline() {
@@ -107,7 +118,7 @@ public class ReviewDTO {
         return "PeviewDTO{" +
                 "id=" + id +
                 ", userId=" + userId +
-                ", productId=" + productId +
+                ", productDTO=" + productDTO +
                 ", headline='" + headline + '\'' +
                 ", description='" + description + '\'' +
                 ", rate=" + rate +

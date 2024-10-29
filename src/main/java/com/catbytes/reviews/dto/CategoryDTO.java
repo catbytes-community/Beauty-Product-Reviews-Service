@@ -1,5 +1,6 @@
 package com.catbytes.reviews.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -7,9 +8,13 @@ import java.util.List;
 @Component
 public class CategoryDTO {
 
+    @Schema(description = "The unique identifier of category", example = "2")
     private Long id;
+    @Schema(description = "The name of of category", example = "Moisturizers")
     private String name;
+    @Schema(description = "The identifier of parent category", example = "1")
     private Long parentId;
+    @Schema(description = "The list of sub-categories", example = "[]")
     private List<CategoryDTO> subCategories;
 
     public CategoryDTO() {
