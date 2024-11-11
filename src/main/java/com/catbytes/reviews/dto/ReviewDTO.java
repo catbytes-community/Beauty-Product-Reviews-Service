@@ -16,15 +16,6 @@ public class ReviewDTO {
     @Schema(description = "The unique identifier of the review", example = "1")
     private Long id;
 
-    @Schema(description = "ID of the user who submitted the review", example = "123")
-    @NotNull
-    private Long userId;
-
-    @Schema(description = "Product being reviewed")
-    @Valid
-    @NotNull
-    private ProductDTO productDTO;
-
     @Schema(description = "Headline or title of the review", example = "Great product!")
     @NotEmpty(message = "headline should not be empty")
     @Size(min = 2, max = 200)
@@ -44,10 +35,8 @@ public class ReviewDTO {
     @Schema(description = "Timestamp when the review was last updated")
     private LocalDateTime updatedAt;
 
-    public ReviewDTO(Long id, Long userId, ProductDTO productDTO, String headline, String description, Integer rate, LocalDateTime createdAt) {
+    public ReviewDTO(Long id, String headline, String description, Integer rate, LocalDateTime createdAt) {
         this.id = id;
-        this.userId = userId;
-        this.productDTO = productDTO;
         this.headline = headline;
         this.description = description;
         this.rate = rate;
@@ -62,22 +51,6 @@ public class ReviewDTO {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public ProductDTO getProductDTO() {
-        return productDTO;
-    }
-
-    public void setProductDTO(ProductDTO productDTO) {
-        this.productDTO = productDTO;
     }
 
     public String getHeadline() {
@@ -116,8 +89,6 @@ public class ReviewDTO {
     public String toString() {
         return "PeviewDTO{" +
                 "id=" + id +
-                ", userId=" + userId +
-                ", productDTO=" + productDTO +
                 ", headline='" + headline + '\'' +
                 ", description='" + description + '\'' +
                 ", rate=" + rate +
