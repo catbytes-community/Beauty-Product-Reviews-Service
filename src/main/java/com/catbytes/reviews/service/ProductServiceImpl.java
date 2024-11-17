@@ -1,11 +1,11 @@
 package com.catbytes.reviews.service;
 
 import com.catbytes.reviews.entity.Product;
-import com.catbytes.reviews.entity.Brand;
-import com.catbytes.reviews.repository.BrandRepository;
 import com.catbytes.reviews.mapper.ProductMapper;
 import com.catbytes.reviews.repository.CategoryRepository;
 import com.catbytes.reviews.repository.ProductRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -17,24 +17,17 @@ import java.util.Optional;
 @Service
 public class ProductServiceImpl implements ProductService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ProductServiceImpl.class);
+
     private final ProductRepository productRepository;
-    private final BrandRepository brandRepository;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository,
-                              ProductMapper productMapper, BrandRepository brandRepository) {
+    public ProductServiceImpl(ProductRepository productRepository) {
         this.productRepository = productRepository;
-        this.brandRepository = brandRepository;
     }
 
     @Override
     public Product addProduct(Product product) {
-        // Check if a brand by name exists
-        Brand brand = brandRepository.findByName(product.getBrand().getName())
-                .orElseGet(() -> brandRepository.save(new Brand(product.getBrand().getName())));
-
-        product.setBrand(brand);
-
         Optional<Product> existingProduct = productRepository.findByNameAndBrand(product.getName(), product.getBrand());
         if (existingProduct.isPresent()) {
             throw new IllegalArgumentException("Product with the same name and brand already exists.");
@@ -77,13 +70,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Brand> getAllBrands() {
-        return brandRepository.findAll();
+    public Product findOrCreateProduct(Product product) {
+        if (product.getId() != null) {
+            return productRepository.findProductById(product.getId())
+                    .orElseGet(() -> {
+                        LOG.warn("Product with id {} not found. Creating new product.", product.getId());
+                        return addProduct(product);
+                    });
+        } else {
+            LOG.warn("Product id not found. Creating new product.");
+            return addProduct(product);
+        }
     }
 
-    @Override
-    public Brand addBrand(String brandName) {
-        return brandRepository.findByName(brandName)
-                .orElseGet(() -> brandRepository.save(new Brand(brandName)));
-    }
 }

@@ -41,8 +41,6 @@ public class Review {
     private String description;
 
     @NotNull
-    @Min(1)
-    @Max(5)
     private Integer rate;
 
     private LocalDateTime createdAt;
