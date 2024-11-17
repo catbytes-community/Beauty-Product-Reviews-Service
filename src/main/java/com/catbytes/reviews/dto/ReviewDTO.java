@@ -1,13 +1,9 @@
 package com.catbytes.reviews.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDateTime;
 
@@ -43,7 +39,8 @@ public class ReviewDTO {
         this.createdAt = createdAt;
     }
 
-    public ReviewDTO() {}
+    public ReviewDTO() {
+    }
 
     public Long getId() {
         return id;

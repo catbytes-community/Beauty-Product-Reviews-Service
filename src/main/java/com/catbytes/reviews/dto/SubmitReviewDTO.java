@@ -10,12 +10,12 @@ public class SubmitReviewDTO {
     @NotNull
     private Long userId;
 
-    @Schema(description = "Product being reviewed")
+    @Schema(description = "Detailed information about the product being reviewed, including its identifier, name, brand, category, average rating")
     @Valid
     @NotNull
     private ProductDTO productDTO;
 
-    @Schema(description = "")
+    @Schema(description = "Detailed information about the submitted review, including id, headliner, description, rating")
     @Valid
     @NotNull
     private ReviewDTO reviewDTO;
@@ -26,7 +26,8 @@ public class SubmitReviewDTO {
         this.reviewDTO = reviewDTO;
     }
 
-    public SubmitReviewDTO() {}
+    public SubmitReviewDTO() {
+    }
 
     public @NotNull Long getUserId() {
         return userId;

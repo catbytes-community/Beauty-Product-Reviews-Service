@@ -1,6 +1,5 @@
 package com.catbytes.reviews.entity;
 
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,8 +7,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -45,8 +42,10 @@ public class Review {
 
     private LocalDateTime createdAt;
 
-    public Review(Long id, User user, Product product, String headline, String description, Integer rate, LocalDateTime createdAt) {
-        this.id = id;
+    private LocalDateTime updatedAt;
+
+    public Review(User user, Product product, String headline, String description,
+                  Integer rate, LocalDateTime createdAt) {
         this.user = user;
         this.product = product;
         this.headline = headline;
@@ -55,7 +54,8 @@ public class Review {
         this.createdAt = createdAt;
     }
 
-    public Review() {}
+    public Review() {
+    }
 
     public Long getId() {
         return id;
@@ -111,6 +111,14 @@ public class Review {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override

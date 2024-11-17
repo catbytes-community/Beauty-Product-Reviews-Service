@@ -1,13 +1,6 @@
 package com.catbytes.reviews.service;
 
-import com.catbytes.reviews.dto.ProductDTO;
-import com.catbytes.reviews.dto.SubmitReviewDTO;
-import com.catbytes.reviews.entity.Product;
 import com.catbytes.reviews.entity.Review;
-import com.catbytes.reviews.entity.User;
-import com.catbytes.reviews.mapper.ProductMapper;
-import com.catbytes.reviews.mapper.ReviewMapper;
-import com.catbytes.reviews.repository.ProductRepository;
 import com.catbytes.reviews.repository.ReviewRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

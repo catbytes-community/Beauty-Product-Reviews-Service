@@ -1,16 +1,10 @@
 package com.catbytes.reviews.mapper;
 
-import com.catbytes.reviews.dto.ProductDTO;
 import com.catbytes.reviews.dto.ReviewDTO;
-import com.catbytes.reviews.entity.Product;
 import com.catbytes.reviews.entity.Review;
-import com.catbytes.reviews.entity.User;
-import com.catbytes.reviews.repository.ProductRepository;
 import com.catbytes.reviews.repository.UserRepository;
-import com.catbytes.reviews.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
