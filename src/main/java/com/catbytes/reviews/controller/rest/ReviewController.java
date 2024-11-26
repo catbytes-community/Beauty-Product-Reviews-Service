@@ -23,14 +23,11 @@ public class ReviewController {
     private final ReviewService reviewService;
     private final CategoryRepository categoryRepository;
 
-    @Value("${review.filter.minRating}")
-    private int minRating;
+    @Value("${rate.min}")
+    private int rateMin;
 
-    @Value("${review.filter.maxRating}")
-    private int maxRating;
-
-    @Value("${review.filter.defaultLimit}")
-    private int defaultLimit;
+    @Value("${rate.max}")
+    private int rateMax;
 
     @Autowired
     public ReviewController(ReviewService reviewService, CategoryRepository categoryRepository) {
@@ -66,14 +63,13 @@ public class ReviewController {
                 })
                 .collect(Collectors.toList());
 
-        // List of ratings from minRating to maxRating
-        List<Integer> ratings = IntStream.rangeClosed(minRating, maxRating).boxed().collect(Collectors.toList());
+        // List of ratings from min to max
+        List<Integer> ratings = IntStream.rangeClosed(rateMin, rateMax).boxed().collect(Collectors.toList());
 
         // Final response structure
         Map<String, Object> response = new HashMap<>();
         response.put("categories", categories);
         response.put("ratings", ratings);
-        response.put("defaultLimit", defaultLimit);
 
         return response;
     }
