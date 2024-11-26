@@ -20,7 +20,7 @@ public interface ProductService {
     void deleteProduct(Long id);
 
     // Methods for Brand
-    List<Brand> getAllBrands();
+    List<Brand> getAllBrands(String sortBy, String direction, int limit);
 
     Brand addBrand(String brandName);
 

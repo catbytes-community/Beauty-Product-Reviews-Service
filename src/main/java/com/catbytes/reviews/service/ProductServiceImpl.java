@@ -77,9 +77,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Brand> getAllBrands() {
-        return brandRepository.findAll();
+    public List<Brand> getAllBrands(String sortBy, String direction, int limit) {
+        Sort.Direction sortDirection = direction.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+        return brandRepository.findAll(PageRequest.of(0, limit, Sort.by(sortDirection, sortBy))).getContent();
     }
+
 
     @Override
     public Brand addBrand(String brandName) {

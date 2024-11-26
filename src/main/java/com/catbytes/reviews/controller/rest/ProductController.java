@@ -2,6 +2,7 @@ package com.catbytes.reviews.controller.rest;
 
 import com.catbytes.reviews.dto.ProductDTO;
 import com.catbytes.reviews.entity.Brand;
+import com.catbytes.reviews.dto.BrandDTO;
 import com.catbytes.reviews.entity.Product;
 import com.catbytes.reviews.mapper.ProductMapper;
 import com.catbytes.reviews.service.ProductService;
@@ -48,9 +49,12 @@ public class ProductController {
 
     @GetMapping("/brand")
     @Operation(summary = "Get all available brands",
-            description = "Returns a list of all available brands.")
-    public List<String> getAllBrands() {
-        return productService.getAllBrands().stream()
+            description = "Returns a list of all available brands with optional sorting.")
+    public List<String> getAllBrands(
+            @RequestParam(name = "limit", defaultValue = "10") int limit,
+            @RequestParam(name = "sortBy", defaultValue = "name") String sortBy,
+            @RequestParam(name = "direction", defaultValue = "asc") String direction) {
+        return productService.getAllBrands(sortBy, direction, limit).stream()
                 .map(Brand::getName)
                 .collect(Collectors.toList());
     }
@@ -70,4 +74,5 @@ public class ProductController {
         Product savedProduct = productService.addProduct(product);
         return productMapper.toDTO(savedProduct);
     }
+
 }

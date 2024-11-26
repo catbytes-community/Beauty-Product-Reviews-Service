@@ -1,22 +1,25 @@
 package com.catbytes.reviews.dto;
 
-import com.catbytes.reviews.entity.Brand;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public class ProductDTO {
 
     @Schema(description = "The unique identifier of product", example = "1")
     private Long id;
+
     @Schema(description = "Product name", example = "Moisture Surge Gel")
     private String name;
+
     @Schema(description = "Product brand", example = "Clinique")
-    private Brand brand;
+    private BrandDTO brand;
+
     @Schema(description = "Category identifier", example = "3")
     private Long categoryId;
+
     @Schema(description = "Product average rating", example = "4.5")
     private Double averageRating;
 
-    public ProductDTO(Long id, String name, Brand brand, Long categoryId, Double averageRating) {
+    public ProductDTO(Long id, String name, BrandDTO brand, Long categoryId, Double averageRating) {
         this.id = id;
         this.name = name;
         this.brand = brand;
@@ -44,11 +47,11 @@ public class ProductDTO {
         this.name = name;
     }
 
-    public Brand getBrand() {
+    public BrandDTO getBrand() {
         return brand;
     }
 
-    public void setBrand(Brand brand) {
+    public void setBrand(BrandDTO brand) {
         this.brand = brand;
     }
 
