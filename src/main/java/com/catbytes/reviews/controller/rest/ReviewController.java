@@ -4,6 +4,7 @@ import com.catbytes.reviews.dto.ReviewDTO;
 import com.catbytes.reviews.repository.CategoryRepository;
 import com.catbytes.reviews.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -21,6 +22,15 @@ public class ReviewController {
 
     private final ReviewService reviewService;
     private final CategoryRepository categoryRepository;
+
+    @Value("${review.filter.minRating}")
+    private int minRating;
+
+    @Value("${review.filter.maxRating}")
+    private int maxRating;
+
+    @Value("${review.filter.defaultLimit}")
+    private int defaultLimit;
 
     @Autowired
     public ReviewController(ReviewService reviewService, CategoryRepository categoryRepository) {
@@ -56,13 +66,14 @@ public class ReviewController {
                 })
                 .collect(Collectors.toList());
 
-        // List of ratings
-        List<Integer> ratings = IntStream.rangeClosed(1, 5).boxed().collect(Collectors.toList());
+        // List of ratings from minRating to maxRating
+        List<Integer> ratings = IntStream.rangeClosed(minRating, maxRating).boxed().collect(Collectors.toList());
 
         // Final response structure
         Map<String, Object> response = new HashMap<>();
         response.put("categories", categories);
         response.put("ratings", ratings);
+        response.put("defaultLimit", defaultLimit);
 
         return response;
     }
