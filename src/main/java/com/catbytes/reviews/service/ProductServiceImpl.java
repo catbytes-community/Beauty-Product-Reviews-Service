@@ -1,5 +1,6 @@
 package com.catbytes.reviews.service;
 
+import com.catbytes.reviews.entity.Category;
 import com.catbytes.reviews.entity.Product;
 import com.catbytes.reviews.mapper.ProductMapper;
 import com.catbytes.reviews.repository.CategoryRepository;
@@ -16,11 +17,13 @@ import java.util.Optional;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
 
     @Autowired
     public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository,
                               ProductMapper productMapper) {
         this.productRepository = productRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
@@ -58,6 +61,12 @@ public class ProductServiceImpl implements ProductService {
 
         // Apply limit and sort
         return productRepository.findByNameContainingIgnoreCase(name, PageRequest.of(0, limit, Sort.by(sortDirection, sortBy))).getContent();
+    }
+
+    @Override
+    public Category findCategoryById(Long categoryId) {
+        return categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new IllegalArgumentException("Category with ID " + categoryId + " does not exist."));
     }
 
     @Override
