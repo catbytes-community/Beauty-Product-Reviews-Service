@@ -22,6 +22,6 @@ public interface ProductService {
     // Methods for Brand
     List<Brand> getAllBrands(String sortBy, String direction, int limit);
 
-    Brand addBrand(String brandName);
+    List<Brand> findBrandsByNameContainingIgnoreCase(String name, int limit, String sortBy, String direction);
 
 }

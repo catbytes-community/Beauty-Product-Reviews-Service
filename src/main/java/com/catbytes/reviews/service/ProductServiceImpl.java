@@ -6,8 +6,10 @@ import com.catbytes.reviews.repository.BrandRepository;
 import com.catbytes.reviews.mapper.ProductMapper;
 import com.catbytes.reviews.repository.CategoryRepository;
 import com.catbytes.reviews.repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -28,17 +30,19 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public Product addProduct(Product product) {
-        // Check if a brand by name exists
-        Brand brand = brandRepository.findByName(product.getBrand().getName())
-                .orElseGet(() -> brandRepository.save(new Brand(product.getBrand().getName())));
-
+        // Find or create a brand
+        Brand brand = findOrCreateBrand(product.getBrand());
         product.setBrand(brand);
 
+        // Check for duplicates
         Optional<Product> existingProduct = productRepository.findByNameAndBrand(product.getName(), product.getBrand());
         if (existingProduct.isPresent()) {
             throw new IllegalArgumentException("Product with the same name and brand already exists.");
         }
+
+        // Save the product
         return productRepository.save(product);
     }
 
@@ -78,14 +82,21 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Brand> getAllBrands(String sortBy, String direction, int limit) {
-        Sort.Direction sortDirection = direction.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
-        return brandRepository.findAll(PageRequest.of(0, limit, Sort.by(sortDirection, sortBy))).getContent();
+        Sort sort = Sort.by(Sort.Direction.fromString(direction), sortBy);
+        Pageable pageable = PageRequest.of(0, limit, sort);
+        return brandRepository.findAll(pageable).getContent();
     }
 
-
     @Override
-    public Brand addBrand(String brandName) {
-        return brandRepository.findByName(brandName)
-                .orElseGet(() -> brandRepository.save(new Brand(brandName)));
+    public List<Brand> findBrandsByNameContainingIgnoreCase(String name, int limit, String sortBy, String direction) {
+        Sort sort = Sort.by(Sort.Direction.fromString(direction), sortBy);
+        Pageable pageable = PageRequest.of(0, limit, sort);
+        return brandRepository.findByNameContainingIgnoreCase(name, pageable);
+    }
+
+    // Method for finding or creating a brand
+    public Brand findOrCreateBrand(Brand brand) {
+        return brandRepository.findByName(brand.getName())
+                .orElseGet(() -> brandRepository.save(new Brand(brand.getName())));
     }
 }
