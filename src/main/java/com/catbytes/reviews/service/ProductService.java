@@ -1,5 +1,6 @@
 package com.catbytes.reviews.service;
 
+import com.catbytes.reviews.entity.Category;
 import com.catbytes.reviews.entity.Product;
 
 import java.util.List;
@@ -17,6 +18,8 @@ public interface ProductService {
     Product addProduct(Product product);
 
     void deleteProduct(Long id);
+
+    Category findCategoryById(Long categoryId);
 
 
 }
