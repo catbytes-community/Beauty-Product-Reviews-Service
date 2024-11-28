@@ -96,7 +96,10 @@ public class ProductServiceImpl implements ProductService {
 
     // Method for finding or creating a brand
     public Brand findOrCreateBrand(Brand brand) {
-        return brandRepository.findByName(brand.getName())
-                .orElseGet(() -> brandRepository.save(new Brand(brand.getName())));
+        // Bringing the brand name to a unified form: removing spaces and making it case-insensitive
+        String normalizedBrandName = brand.getName().trim().toLowerCase();
+
+        return brandRepository.findByNameIgnoreCase(normalizedBrandName)
+                .orElseGet(() -> brandRepository.save(new Brand(normalizedBrandName)));
     }
 }

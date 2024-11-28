@@ -17,7 +17,7 @@ public class Brand {
     }
 
     public Brand(String name) {
-        this.name = name;
+        this.name = name.trim().toLowerCase();
     }
 
     public Long getId() {
