@@ -2,6 +2,7 @@ package com.catbytes.reviews.controller.rest;
 
 import com.catbytes.reviews.dto.ProductDTO;
 import com.catbytes.reviews.entity.Brand;
+import com.catbytes.reviews.entity.Category;
 import com.catbytes.reviews.entity.Product;
 import com.catbytes.reviews.mapper.ProductMapper;
 import com.catbytes.reviews.service.ProductService;
@@ -71,10 +72,9 @@ public class ProductController {
     @Operation(summary = "Add a new product",
             description = "Creates a new product. If the brand does not exist, it will be created.")
     public ProductDTO addProduct(@RequestBody ProductDTO productDTO) {
-
         // We pass DTO directly to the service, the logic of brand processing inside the service
-        Product savedProduct = productService.addProduct(productMapper.toEntity(productDTO));
-        return productMapper.toDTO(savedProduct); // Return the transformed entity
+        Product savedProduct = productService.addProduct(productDTO);
+        return productMapper.toDTO(savedProduct);
     }
 
 }
