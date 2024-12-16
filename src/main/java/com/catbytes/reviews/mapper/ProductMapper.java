@@ -32,16 +32,12 @@ public class ProductMapper {
         );
     }
 
-    public Product toEntity(ProductDTO productDTO, Category category, Brand brand) {
-        if (productDTO == null || category == null || brand == null) {
-            throw new IllegalArgumentException("ProductDTO, Category, and Brand must not be null.");
-        }
-
+    public Product toEntity(ProductDTO productDTO, Category category) {
+        Brand brand = brandMapper.toEntity(productDTO.getBrand());
         return new Product(
                 productDTO.getName(),
                 brand,
-                category,
-                productDTO.getAverageRating()
+                category
         );
     }
 

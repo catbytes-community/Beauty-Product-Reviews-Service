@@ -33,11 +33,10 @@ public class Product {
     }
 
 
-    public Product(String name, Brand brand, Category category, Double averageRating) {
+    public Product(String name, Brand brand, Category category) {
         this.name = name;
         this.brand = brand;
         this.category = category;
-        this.averageRating = averageRating;
     }
 
     public Long getId() {

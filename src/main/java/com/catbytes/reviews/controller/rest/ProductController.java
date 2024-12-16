@@ -72,8 +72,12 @@ public class ProductController {
     @Operation(summary = "Add a new product",
             description = "Creates a new product. If the brand does not exist, it will be created.")
     public ProductDTO addProduct(@RequestBody ProductDTO productDTO) {
-        // We pass DTO directly to the service, the logic of brand processing inside the service
-        Product savedProduct = productService.addProduct(productDTO);
+        // Find the category
+        Category category = productService.findCategoryById(productDTO.getCategoryId());
+        // Convert the DTO to an entity, passing in the category and brand
+        Product product = productMapper.toEntity(productDTO, category);
+
+        Product savedProduct = productService.addProduct(product);
         return productMapper.toDTO(savedProduct);
     }
 

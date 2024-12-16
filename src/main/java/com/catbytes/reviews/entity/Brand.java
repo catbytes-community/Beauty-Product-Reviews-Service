@@ -17,7 +17,7 @@ public class Brand {
     }
 
     public Brand(String name) {
-        this.name = name == null ? null : name.trim();
+        this.name = name.trim();
     }
 
     public Long getId() {
@@ -33,6 +33,6 @@ public class Brand {
     }
 
     public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+        this.name = name.trim();
     }
 }

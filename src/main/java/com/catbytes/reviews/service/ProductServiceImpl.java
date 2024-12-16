@@ -38,22 +38,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public Product addProduct(ProductDTO productDTO) {
-        // Find the category
-        Category category = findCategoryById(productDTO.getCategoryId());
-
-        // Convert BrandDTO to Brand
-        Brand brand = findOrCreateBrand(new Brand(productDTO.getBrand().getName()));
-
-        // Convert the DTO to an entity, passing in the category and brand
-        Product product = productMapper.toEntity(productDTO, category, brand);
-
+    public Product addProduct(Product product) {
+        Brand brand = findOrCreateBrand(product.getBrand());
         // Check for duplicates
-        Optional<Product> existingProduct = productRepository.findByNameAndBrand(product.getName(), brand);
-        if (existingProduct.isPresent()) {
+        if (!productRepository.existsByNameAndBrand(product.getName(), brand)) {
             throw new IllegalArgumentException("Product with the same name and brand already exists.");
         }
-
         // Save and return the product
         return productRepository.save(product);
     }
