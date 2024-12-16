@@ -17,8 +17,11 @@ public class Product {
     private Long id;
 
     private String name;
-    private String brand;
     private Double averageRating;
+
+    @ManyToOne
+    @JoinColumn(name = "brand_id")
+    private Brand brand;
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
@@ -29,11 +32,11 @@ public class Product {
     public Product() {
     }
 
-    public Product(String name, String brand, Category category, Double averageRating) {
+
+    public Product(String name, Brand brand, Category category) {
         this.name = name;
         this.brand = brand;
         this.category = category;
-        this.averageRating = averageRating;
     }
 
     public Long getId() {
@@ -52,19 +55,19 @@ public class Product {
         this.name = name;
     }
 
-    public String getBrand() {
+    public Brand getBrand() {
         return brand;
     }
 
-    public void setBrand(String brand) {
+    public void setBrand(Brand brand) {
         this.brand = brand;
     }
 
-    public double getAverageRating() {
+    public Double getAverageRating() {
         return averageRating;
     }
 
-    public void setAverageRating(double averageRating) {
+    public void setAverageRating(Double averageRating) {
         this.averageRating = averageRating;
     }
 
@@ -75,6 +78,4 @@ public class Product {
     public void setCategory(Category category) {
         this.category = category;
     }
-
-
 }

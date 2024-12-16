@@ -1,5 +1,7 @@
 package com.catbytes.reviews.service;
 
+import com.catbytes.reviews.dto.ProductDTO;
+import com.catbytes.reviews.entity.Brand;
 import com.catbytes.reviews.entity.Category;
 import com.catbytes.reviews.entity.Product;
 
@@ -21,5 +23,9 @@ public interface ProductService {
 
     Category findCategoryById(Long categoryId);
 
+    Brand findOrCreateBrand(Brand brand);
 
+    List<Brand> getAllBrands(String sortBy, String direction, int limit);
+
+    List<Brand> findBrandsByNameContainingIgnoreCase(String name, int limit, String sortBy, String direction);
 }

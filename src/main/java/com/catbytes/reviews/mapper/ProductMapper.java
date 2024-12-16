@@ -1,6 +1,8 @@
 package com.catbytes.reviews.mapper;
 
+import com.catbytes.reviews.dto.BrandDTO;
 import com.catbytes.reviews.dto.ProductDTO;
+import com.catbytes.reviews.entity.Brand;
 import com.catbytes.reviews.entity.Category;
 import com.catbytes.reviews.entity.Product;
 import org.springframework.stereotype.Component;
@@ -8,29 +10,36 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProductMapper {
 
+    private final BrandMapper brandMapper;
+
+    public ProductMapper(BrandMapper brandMapper) {
+        this.brandMapper = brandMapper;
+    }
+
     public ProductDTO toDTO(Product product) {
         if (product == null) {
             return null;
         }
+
+        BrandDTO brandDTO = brandMapper.toDTO(product.getBrand());
+
         return new ProductDTO(
                 product.getId(),
                 product.getName(),
-                product.getBrand(),
+                brandDTO,
                 product.getCategory().getId(),
                 product.getAverageRating()
         );
     }
 
     public Product toEntity(ProductDTO productDTO, Category category) {
-        if (productDTO == null) {
-            return null;
-        }
-
+        Brand brand = brandMapper.toEntity(productDTO.getBrand());
         return new Product(
                 productDTO.getName(),
-                productDTO.getBrand(),
-                category,
-                productDTO.getAverageRating()
+                brand,
+                category
         );
     }
+
 }
+
