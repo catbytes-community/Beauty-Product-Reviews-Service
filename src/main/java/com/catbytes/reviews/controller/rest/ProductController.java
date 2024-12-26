@@ -2,6 +2,7 @@ package com.catbytes.reviews.controller.rest;
 
 import com.catbytes.reviews.dto.ProductDTO;
 import com.catbytes.reviews.entity.Brand;
+import com.catbytes.reviews.entity.Category;
 import com.catbytes.reviews.entity.Product;
 import com.catbytes.reviews.mapper.ProductMapper;
 import com.catbytes.reviews.service.ProductService;
@@ -47,10 +48,22 @@ public class ProductController {
     }
 
     @GetMapping("/brand")
-    @Operation(summary = "Get all available brands",
-            description = "Returns a list of all available brands.")
-    public List<String> getAllBrands() {
-        return productService.getAllBrands().stream()
+    @Operation(summary = "Get available brands",
+            description = "Find brands by containing name value with ignoring case. If no name is provided, returns all brands.")
+    public List<String> getAllBrands(
+            @RequestParam(name = "name", required = false) String name,
+            @RequestParam(name = "limit", defaultValue = "10") int limit,
+            @RequestParam(name = "sortBy", defaultValue = "name") String sortBy,
+            @RequestParam(name = "direction", defaultValue = "asc") String direction) {
+
+        List<Brand> brands;
+        if (name == null || name.isEmpty()) {
+            brands = productService.getAllBrands(sortBy, direction, limit);
+        } else {
+            brands = productService.findBrandsByNameContainingIgnoreCase(name, limit, sortBy, direction);
+        }
+
+        return brands.stream()
                 .map(Brand::getName)
                 .collect(Collectors.toList());
     }
@@ -59,15 +72,12 @@ public class ProductController {
     @Operation(summary = "Add a new product",
             description = "Creates a new product. If the brand does not exist, it will be created.")
     public ProductDTO addProduct(@RequestBody ProductDTO productDTO) {
-        // Getting or creating a brand
-        Brand brand = productService.addBrand(productDTO.getBrand().getName()); // Get the brand name from the Brand object
 
-        // Convert ProductDTO to Product and set Brand object
+        // Convert the DTO to an entity, passing in the category and brand
         Product product = productMapper.toEntity(productDTO);
-        product.setBrand(brand);
 
-        // Save the new product and return the corresponding ProductDTO
         Product savedProduct = productService.addProduct(product);
         return productMapper.toDTO(savedProduct);
     }
+
 }

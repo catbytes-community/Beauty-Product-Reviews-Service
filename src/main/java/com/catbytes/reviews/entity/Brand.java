@@ -5,22 +5,24 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Column;
 
 @Entity
 @Table(name = "brand")
 public class Brand {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true, nullable = false)
     private String name;
-
 
     public Brand() {
     }
 
     public Brand(String name) {
-        this.name = name;
+        this.name = name.trim();
     }
 
     public Long getId() {
@@ -36,6 +38,6 @@ public class Brand {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name.trim();
     }
 }
