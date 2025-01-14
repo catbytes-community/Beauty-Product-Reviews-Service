@@ -18,4 +18,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     //TODO: implement retrieving rates from assigned Reviews after [#11] - Review Entity and Review Posting API
 
+    Optional<Product> findProductById(Long id);
+
 }

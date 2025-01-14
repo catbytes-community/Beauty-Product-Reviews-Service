@@ -21,6 +21,8 @@ public interface ProductService {
 
     void deleteProduct(Long id);
 
+    Product findOrCreateProduct(Product product);
+
     Category findCategoryById(Long categoryId);
 
     Brand findOrCreateBrand(Brand brand);
@@ -28,4 +30,5 @@ public interface ProductService {
     List<Brand> getAllBrands(String sortBy, String direction, int limit);
 
     List<Brand> findBrandsByNameContainingIgnoreCase(String name, int limit, String sortBy, String direction);
+
 }
