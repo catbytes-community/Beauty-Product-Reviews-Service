@@ -1,5 +1,6 @@
 package com.catbytes.reviews.controller.rest;
 
+import com.catbytes.reviews.dto.DetailedReviewDTO;
 import com.catbytes.reviews.dto.SubmitReviewDTO;
 import com.catbytes.reviews.entity.Product;
 import com.catbytes.reviews.entity.Review;
@@ -27,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -76,21 +78,17 @@ public class ReviewController {
         return reviewService.submitReview(review);
     }
 
+    @GetMapping("/{id}")
     @Operation(summary = "Retrieve detailed information about a specific review")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved review details"),
             @ApiResponse(responseCode = "404", description = "Review not found")
     })
+    public DetailedReviewDTO getReviewDetails(@PathVariable Long id) {
+        LOG.info("Retrieving details for review with id: {}", id);
 
-    @GetMapping("/{id}")
-    public ReviewDTO getReviewById(@PathVariable Long id) {
-        return reviewService.getReviewById(id);
+        return reviewService.getReviewDetails(id);
     }
-
-    @Operation(summary = "Get available filter values for reviews")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Filter values successfully retrieved")
-    })
 
     @GetMapping("/filter")
     public Map<String, Object> getFilterValues() {
