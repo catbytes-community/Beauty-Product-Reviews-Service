@@ -84,7 +84,7 @@ public class ReviewDTO {
 
     @Override
     public String toString() {
-        return "PeviewDTO{" +
+        return "ReviewDTO{" +
                 "id=" + id +
                 ", headline='" + headline + '\'' +
                 ", description='" + description + '\'' +
