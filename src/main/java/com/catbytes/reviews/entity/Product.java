@@ -25,18 +25,7 @@ public class Product {
     private Category category;
 
     //TODO: implement @OneToMany List<Review> after [#11] - Review Entity and Review Posting API
-
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Review> reviews = new ArrayList<>();
-
-    public List<Review> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
-    }
-
+    
     public Product() {
     }
 

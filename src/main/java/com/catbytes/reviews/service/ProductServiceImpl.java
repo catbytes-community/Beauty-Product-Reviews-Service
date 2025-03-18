@@ -3,7 +3,6 @@ package com.catbytes.reviews.service;
 import com.catbytes.reviews.entity.Product;
 import com.catbytes.reviews.entity.Category;
 import com.catbytes.reviews.entity.Brand;
-import com.catbytes.reviews.dto.ProductDTO;
 import com.catbytes.reviews.repository.BrandRepository;
 import com.catbytes.reviews.mapper.ProductMapper;
 import com.catbytes.reviews.repository.CategoryRepository;
@@ -18,7 +17,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -28,7 +26,6 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final BrandRepository brandRepository;
     private final CategoryRepository categoryRepository;
-    private final ProductMapper productMapper;
 
     @Autowired
     public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository,
@@ -36,7 +33,6 @@ public class ProductServiceImpl implements ProductService {
         this.productRepository = productRepository;
         this.brandRepository = brandRepository;
         this.categoryRepository = categoryRepository;
-        this.productMapper = productMapper;
 
     }
 
@@ -87,7 +83,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Double setAverageRating(Long productId) {
+    public void updateProductRating(Long productId) {
         // Get the average rating using a private method
         double average = calculateAverageRating(productId);
 
@@ -98,8 +94,6 @@ public class ProductServiceImpl implements ProductService {
         // Set the average rating and save the product
         product.setAverageRating(average);
         productRepository.save(product);
-
-        return average;
     }
 
     private Double calculateAverageRating(Long productId) {

@@ -11,7 +11,7 @@ public interface ProductService {
 
     List<Product> findByNameContainingIgnoreCase(String name, int limit, String sortBy, String direction);
 
-    Double setAverageRating(Long productId);
+    void updateProductRating(Long productId);
 
     List<Product> getAllProducts(int limit, String sortBy, String direction);
 
