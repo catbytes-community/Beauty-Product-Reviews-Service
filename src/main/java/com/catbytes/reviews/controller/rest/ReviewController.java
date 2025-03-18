@@ -5,10 +5,10 @@ import com.catbytes.reviews.dto.SubmitReviewDTO;
 import com.catbytes.reviews.entity.Product;
 import com.catbytes.reviews.entity.Review;
 import com.catbytes.reviews.entity.User;
+import com.catbytes.reviews.facade.ReviewFacade;
 import com.catbytes.reviews.mapper.ProductMapper;
 import com.catbytes.reviews.mapper.ReviewMapper;
 import com.catbytes.reviews.repository.UserRepository;
-import com.catbytes.reviews.dto.ReviewDTO;
 import com.catbytes.reviews.repository.CategoryRepository;
 import com.catbytes.reviews.service.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,7 +19,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
@@ -41,6 +40,7 @@ public class ReviewController {
     private static final Logger LOG = LoggerFactory.getLogger(ReviewController.class);
 
     private final ReviewService reviewService;
+    private final ReviewFacade reviewFacade;
     private final CategoryRepository categoryRepository;
     private final ReviewMapper reviewMapper;
     private final UserRepository userRepository;
@@ -53,8 +53,11 @@ public class ReviewController {
     private int rateMax;
 
     @Autowired
-    public ReviewController(ReviewService reviewService, CategoryRepository categoryRepository, ReviewMapper reviewMapper, UserRepository userRepository, ProductMapper productMapper) {
+    public ReviewController(ReviewService reviewService, ReviewFacade reviewFacade,
+                            CategoryRepository categoryRepository, ReviewMapper reviewMapper,
+                            UserRepository userRepository, ProductMapper productMapper) {
         this.reviewService = reviewService;
+        this.reviewFacade = reviewFacade;
         this.reviewMapper = reviewMapper;
         this.userRepository = userRepository;
         this.productMapper = productMapper;
@@ -86,8 +89,7 @@ public class ReviewController {
     })
     public DetailedReviewDTO getReviewDetails(@PathVariable Long id) {
         LOG.info("Retrieving details for review with id: {}", id);
-
-        return reviewService.getReviewDetails(id);
+        return reviewFacade.getReviewDetails(id); // Используем фасад вместо сервиса
     }
 
     @GetMapping("/filter")
@@ -112,5 +114,5 @@ public class ReviewController {
 
         return response;
     }
-
 }
+

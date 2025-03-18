@@ -4,6 +4,7 @@ public class DetailedReviewDTO {
     private ReviewDTO review;
     private UserDTO user;
     private ProductDTO product;
+    private CategoryDTO category;
 
     public ReviewDTO getReview() {
         return review;
@@ -28,4 +29,13 @@ public class DetailedReviewDTO {
     public void setProduct(ProductDTO product) {
         this.product = product;
     }
+
+    public CategoryDTO getCategory() {
+        return category;
+    }
+
+    public void setCategory(CategoryDTO category) {
+        this.category = category;
+    }
+
 }
