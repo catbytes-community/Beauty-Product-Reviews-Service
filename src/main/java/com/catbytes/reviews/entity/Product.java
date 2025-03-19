@@ -1,12 +1,9 @@
 package com.catbytes.reviews.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "product")
@@ -28,7 +25,7 @@ public class Product {
     private Category category;
 
     //TODO: implement @OneToMany List<Review> after [#11] - Review Entity and Review Posting API
-
+    
     public Product() {
     }
 

@@ -3,7 +3,6 @@ package com.catbytes.reviews.service;
 import com.catbytes.reviews.entity.Product;
 import com.catbytes.reviews.entity.Category;
 import com.catbytes.reviews.entity.Brand;
-import com.catbytes.reviews.dto.ProductDTO;
 import com.catbytes.reviews.repository.BrandRepository;
 import com.catbytes.reviews.mapper.ProductMapper;
 import com.catbytes.reviews.repository.CategoryRepository;
@@ -18,7 +17,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -28,7 +26,6 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final BrandRepository brandRepository;
     private final CategoryRepository categoryRepository;
-    private final ProductMapper productMapper;
 
     @Autowired
     public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository,
@@ -36,7 +33,6 @@ public class ProductServiceImpl implements ProductService {
         this.productRepository = productRepository;
         this.brandRepository = brandRepository;
         this.categoryRepository = categoryRepository;
-        this.productMapper = productMapper;
 
     }
 
@@ -87,10 +83,34 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Double calculateAverageRating(Long productId) {
-        //TODO: implement after [#11] - Review Entity and Review Posting API
-        return null;
+    public void updateProductRating(Long productId) {
+        // Get the average rating using a private method
+        double average = calculateAverageRating(productId);
+
+        // Find product by ID
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("Продукт не найден"));
+
+        // Set the average rating and save the product
+        product.setAverageRating(average);
+        productRepository.save(product);
     }
+
+    private Double calculateAverageRating(Long productId) {
+        // Get a list of ratings for the product
+        List<Integer> ratings = productRepository.findRatingsByProductId(productId);
+
+        if (ratings.isEmpty()) {
+            return 0.0;
+        }
+
+        // Calculate the average value
+        return ratings.stream()
+                .mapToInt(Integer::intValue)
+                .average()
+                .orElse(0.0);
+    }
+
 
     @Override
     public Product findOrCreateProduct(Product product) {
