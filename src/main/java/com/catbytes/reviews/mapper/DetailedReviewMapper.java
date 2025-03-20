@@ -7,6 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 @Component
 public class DetailedReviewMapper {
 
@@ -24,7 +26,7 @@ public class DetailedReviewMapper {
         this.categoryMapper = categoryMapper;
     }
 
-    public DetailedReviewDTO toDTO(Review review, Category category) {
+    public DetailedReviewDTO toDTO(Review review) {
         LOG.info("Mapping Review, User, Product, and Category to DetailedReviewDTO");
 
         if (review == null) {
@@ -36,6 +38,7 @@ public class DetailedReviewMapper {
         if (review.getProduct() == null) {
             throw new IllegalArgumentException("Product for review with id " + review.getId() + " not found");
         }
+        Category category = review.getProduct().getCategory();
         if (category == null) {
             throw new IllegalArgumentException("Category cannot be null");
         }

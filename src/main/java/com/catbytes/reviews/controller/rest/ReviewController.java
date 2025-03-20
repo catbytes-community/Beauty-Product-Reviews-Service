@@ -5,7 +5,7 @@ import com.catbytes.reviews.dto.SubmitReviewDTO;
 import com.catbytes.reviews.entity.Product;
 import com.catbytes.reviews.entity.Review;
 import com.catbytes.reviews.entity.User;
-import com.catbytes.reviews.facade.ReviewFacade;
+import com.catbytes.reviews.mapper.DetailedReviewMapper;
 import com.catbytes.reviews.mapper.ProductMapper;
 import com.catbytes.reviews.mapper.ReviewMapper;
 import com.catbytes.reviews.repository.UserRepository;
@@ -40,11 +40,11 @@ public class ReviewController {
     private static final Logger LOG = LoggerFactory.getLogger(ReviewController.class);
 
     private final ReviewService reviewService;
-    private final ReviewFacade reviewFacade;
     private final CategoryRepository categoryRepository;
     private final ReviewMapper reviewMapper;
     private final UserRepository userRepository;
     private final ProductMapper productMapper;
+    private final DetailedReviewMapper detailedReviewMapper;
 
     @Value("${rate.min}")
     private int rateMin;
@@ -53,15 +53,15 @@ public class ReviewController {
     private int rateMax;
 
     @Autowired
-    public ReviewController(ReviewService reviewService, ReviewFacade reviewFacade,
+    public ReviewController(ReviewService reviewService, DetailedReviewMapper detailedReviewMapper,
                             CategoryRepository categoryRepository, ReviewMapper reviewMapper,
                             UserRepository userRepository, ProductMapper productMapper) {
         this.reviewService = reviewService;
-        this.reviewFacade = reviewFacade;
         this.reviewMapper = reviewMapper;
         this.userRepository = userRepository;
         this.productMapper = productMapper;
         this.categoryRepository = categoryRepository;
+        this.detailedReviewMapper = detailedReviewMapper;
     }
 
     @PostMapping("/reviews")
@@ -89,7 +89,8 @@ public class ReviewController {
     })
     public DetailedReviewDTO getReviewDetails(@PathVariable Long id) {
         LOG.info("Retrieving details for review with id: {}", id);
-        return reviewFacade.getReviewDetails(id); // Используем фасад вместо сервиса
+        Review review = reviewService.getReviewById(id);
+        return detailedReviewMapper.toDTO(review);
     }
 
     @GetMapping("/filter")
