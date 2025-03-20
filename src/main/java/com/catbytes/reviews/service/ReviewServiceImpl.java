@@ -1,8 +1,6 @@
 package com.catbytes.reviews.service;
 
-import com.catbytes.reviews.dto.ReviewDTO;
 import com.catbytes.reviews.entity.Review;
-import com.catbytes.reviews.mapper.ReviewMapper;
 import com.catbytes.reviews.repository.ReviewRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,24 +21,23 @@ public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final ProductService productService;
-    private final ReviewMapper reviewMapper;
 
     @Autowired
-    public ReviewServiceImpl(ReviewRepository reviewRepository, ProductService productService, ReviewMapper reviewMapper) {
+    public ReviewServiceImpl(ReviewRepository reviewRepository, ProductService productService) {
+
         this.reviewRepository = reviewRepository;
         this.productService = productService;
-        this.reviewMapper = reviewMapper;
     }
 
     @Override
-    public ReviewDTO getReviewById(Long id) {
-        Review review = reviewRepository.findById(id)
+    public Review getReviewById(Long id) {
+        return reviewRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Review not found"));
-        return reviewMapper.toDTO(review);
     }
 
     @Override
     public Long submitReview(Review review) {
+
         LOG.debug("Submitting review in service");
 
         if (review.getRate() < MIN || review.getRate() > MAX) {
@@ -51,5 +48,6 @@ public class ReviewServiceImpl implements ReviewService {
         reviewRepository.save(review);
         return review.getId();
     }
-
 }
+
+
